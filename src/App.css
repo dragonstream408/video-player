@@ -4,7 +4,7 @@ html, body {
 }
 
 .container {
-  height: 97.7%;
+  height: 95%;
 }
 
 .vid-box {
@@ -18,4 +18,8 @@ h2, h3 {
 h3 {
   padding: 0;
   margin: 0;
+}
+
+.chatItem {
+  font-size: 12px !important;
 }

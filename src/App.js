@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import SimpleStorageContract from '../build/contracts/SimpleStorage.json'
 import getWeb3 from './utils/getWeb3'
 import { Player } from 'video-react'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import darkTheme from './darkTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import AppBar from 'material-ui/AppBar'
@@ -10,7 +10,10 @@ import FlatButton from 'material-ui/FlatButton'
 import { List, ListItem } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import Subheader from 'material-ui/Subheader'
-import Divider from 'material-ui/Divider'
+import TextField from 'material-ui/TextField'
+import FontIcon from 'material-ui/FontIcon'
+import { green500 } from 'material-ui/styles/colors'
+import BetDialog from './BetDialog'
 
 import './css/pure-min.css'
 import 'react-chat-elements/dist/main.css'
@@ -20,6 +23,7 @@ import './App.css'
 import superman from './img/superman.png'
 import ninja from './img/ninja.png'
 import avatar from './img/avatar.png'
+import overwatch from './img/overwatch.mp4'
 
 class App extends Component {
   constructor(props) {
@@ -28,7 +32,8 @@ class App extends Component {
     this.state = {
       storageValue: 0,
       web3: null,
-      messageList: []
+      messageList: [],
+      openBetDialog: false,
     }
   }
 
@@ -50,14 +55,13 @@ class App extends Component {
       })
   }
 
-  instantiateContract() {
-    /*
-     * SMART CONTRACT EXAMPLE
-     *
-     * Normally these functions would be called in the context of a
-     * state management library, but for convenience I've placed them here.
-     */
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ openBetDialog: true });
+    }, 5000);
+  }
 
+  instantiateContract() {
     const contract = require('truffle-contract')
     const simpleStorage = contract(SimpleStorageContract)
     simpleStorage.setProvider(this.state.web3.currentProvider)
@@ -114,13 +118,11 @@ class App extends Component {
       <div className="container">
         <MuiThemeProvider muiTheme={getMuiTheme(darkTheme)}>
           <div className="container">
-            {/* <nav className="navbar pure-menu pure-menu-horizontal">
-            <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
-          </nav> */}
+            <BetDialog open={this.state.openBetDialog} />
             <AppBar
               title={<span style={styles.title}>StreamBox</span>}
               onTitleClick={this.handleClick}
-              iconElementRight={<FlatButton label="Upload" />}
+              iconElementRight={<div><Avatar src={superman} style={{margin: 6}} /><label style={{top:'-18px',position:'relative',margin:5}}>nacho123</label></div>}
             />
             <main className="container pure-g">
               <div className="pure-u-3-4">
@@ -128,8 +130,9 @@ class App extends Component {
                   <h2>Overwatch Live Stream</h2>
                   <Player
                     playsInline
-                    poster="/assets/poster.png"
-                    src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+                    autoPlay
+                    src={overwatch}
+                  //src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
                   />
                 </div>
               </div>
@@ -137,19 +140,38 @@ class App extends Component {
                 <List>
                   <Subheader>Recent chats</Subheader>
                   <ListItem
-                    primaryText="Brendan Lim"
-                    leftAvatar={<Avatar src={superman} />}
-                  />
-                  <ListItem
-                    primaryText="Eric Hoffman"
+                    className="chatItem"
+                    primaryText="RedDragon408"
+                    secondaryText="This stream is awesome!"
                     leftAvatar={<Avatar src={ninja} />}
                   />
                   <ListItem
-                    primaryText="Grace Ng"
+                    className="chatItem"
+                    primaryText="RedDragon408"
+                    secondaryText="Tasteless is so close to victory!"
+                    leftAvatar={<Avatar src={ninja} />}
+                  />
+                  <ListItem
+                    className="chatItem"
+                    primaryText="nacho123"
+                    secondaryText="I think Day9 will win again!"
+                    leftAvatar={<Avatar src={superman} />}
+                  />
+                  <ListItem
+                    className="chatItem"
+                    primaryText="Steve"
+                    secondaryText="No way... wanna bet?"
                     leftAvatar={<Avatar src={avatar} />}
                   />
+                  <ListItem
+                    className="chatItem"
+                    primaryText="nacho123"
+                    secondaryText="Bring it on!"
+                    leftAvatar={<Avatar src={superman} />}
+                  />
                 </List>
-                <Divider />
+                <TextField hintText="Enter text here..." />
+                <FontIcon className="material-icons" color={green500}>send</FontIcon>
               </div>
             </main>
           </div>
