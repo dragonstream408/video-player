@@ -51,10 +51,19 @@ class App extends Component {
 
         // Instantiate contract once web3 provided.
         // this.instantiateContract()
+        const that = this;
+        const account = this.state.web3.eth.accounts[0];
+        this.state.web3.eth.getBalance(account, function(err, balance){
+          const balanceInEther = that.state.web3.fromWei(balance, 'ether');
+          that.setState({
+            balance: balanceInEther.toString()
+          });
+        });
       })
       .catch(() => {
         console.log('Error finding web3.')
       })
+    
   }
 
   componentDidMount() {
@@ -75,26 +84,26 @@ class App extends Component {
         this.state.web3.eth.getAccounts((error, accounts) => {
           streaming.deployed().then((instance) => {
             streamingInstance = instance
-            return streamingInstance.bill('0xf17f52151EbEF6C7334FAD080c5704D77216b732', { from: accounts[0], value: 1000000000000000000 })
+            return streamingInstance.bill('0xf17f52151EbEF6C7334FAD080c5704D77216b732', { from: accounts[0], value: 10000000000000000})
           })
         });
       }
     }).bind(this), 5000);
 
-    // setInterval(() => {
-    //   const web3 = this.state.web3;
-
-    //   web3.eth.getAccounts((error, accounts) => {
-    //     return accounts[0];
-    //   })
-    // }, 5000);
+    setInterval((function() {
+      const web3 = this.state.web3;
+      const account = web3.eth.accounts[0];
+      const that = this;
+      web3.eth.getBalance(account, function(err, balance){
+        const balanceInEther = web3.fromWei(balance, 'ether');
+        that.setState({
+          balance: balanceInEther.toString()
+        });
+      });
+    }).bind(this), 5000);
 
 
   }
-
-  // shouldComponentUpdate(nextProps) {
-  //   return false;
-  // }
 
   instantiateContract() {
 
@@ -112,11 +121,11 @@ class App extends Component {
       }).then((result) => {
         // Get the value from the contract to prove it worked.
         // return simpleStorageInstance.get.call(accounts[0])
-        // }).then((result) => {
-        //   // Update state with the result.
-        //   return this.setState({ storageValue: result.c[0] })
-        // })
-        console.log(result);
+      // }).then((result) => {
+      //   // Update state with the result.
+      //   return this.setState({ storageValue: result.c[0] })
+      // })
+      // console.log(result);
       })
     });
   }
@@ -150,7 +159,6 @@ class App extends Component {
       charge = true;
     }
 
-    console.log(state);
 
     this.setState({
       charge: charge
@@ -176,6 +184,7 @@ class App extends Component {
             <main className="container pure-g">
               <div className="pure-u-3-4">
                 <div className="vid-box">
+                <h1> Balance: {this.state.balance} </h1>
                   <h2>Overwatch Live Stream</h2>
                   <Player
                     ref="player"
