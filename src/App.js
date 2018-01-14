@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import SimpleStorageContract from '../build/contracts/SimpleStorage.json'
 import getWeb3 from './utils/getWeb3'
+import { Player } from 'video-react';
 
 import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
+import '../node_modules/video-react/dist/video-react.css'
 import './App.css'
 
 class App extends Component {
@@ -22,17 +24,17 @@ class App extends Component {
     // See utils/getWeb3 for more info.
 
     getWeb3
-    .then(results => {
-      this.setState({
-        web3: results.web3
-      })
+      .then(results => {
+        this.setState({
+          web3: results.web3
+        })
 
-      // Instantiate contract once web3 provided.
-      this.instantiateContract()
-    })
-    .catch(() => {
-      console.log('Error finding web3.')
-    })
+        // Instantiate contract once web3 provided.
+        this.instantiateContract()
+      })
+      .catch(() => {
+        console.log('Error finding web3.')
+      })
   }
 
   instantiateContract() {
@@ -56,7 +58,7 @@ class App extends Component {
         simpleStorageInstance = instance
 
         // Stores a given value, 5 by default.
-        return simpleStorageInstance.set(5, {from: accounts[0]})
+        return simpleStorageInstance.set(5, { from: accounts[0] })
       }).then((result) => {
         // Get the value from the contract to prove it worked.
         return simpleStorageInstance.get.call(accounts[0])
@@ -71,7 +73,7 @@ class App extends Component {
     return (
       <div className="App">
         <nav className="navbar pure-menu pure-menu-horizontal">
-            <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
+          <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
         </nav>
 
         <main className="container">
@@ -83,6 +85,11 @@ class App extends Component {
               <p>If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).</p>
               <p>Try changing the value stored on <strong>line 59</strong> of App.js.</p>
               <p>The stored value is: {this.state.storageValue}</p>
+              <Player
+                playsInline
+                poster="/assets/poster.png"
+                src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+              />
             </div>
           </div>
         </main>
