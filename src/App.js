@@ -58,12 +58,15 @@ class App extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ openBetDialog: true });
-    }, 5000);
+      setTimeout(() => {
+        this.setState({ openBetDialog: true });
+        setTimeout(() => {
+          this.setState({ openBetDialog: false });
+        }, 5000);
+      }, 5000);
 
     this.refs.player.subscribeToStateChange(this.videoPlayerStateChanged.bind(this));
-    setInterval((function() {
+    setInterval((function () {
       const contract = require('truffle-contract')
       const streaming = contract(StreamingContract);
       streaming.setProvider(this.state.web3.currentProvider)
@@ -72,48 +75,48 @@ class App extends Component {
         this.state.web3.eth.getAccounts((error, accounts) => {
           streaming.deployed().then((instance) => {
             streamingInstance = instance
-            return streamingInstance.bill('0xf17f52151EbEF6C7334FAD080c5704D77216b732', { from: accounts[0], value: 1000000000000000000})
+            return streamingInstance.bill('0xf17f52151EbEF6C7334FAD080c5704D77216b732', { from: accounts[0], value: 1000000000000000000 })
           })
         });
       }
     }).bind(this), 5000);
 
-    setInterval(function() {
-      const web3 = this.state.web3;
+    // setInterval(() => {
+    //   const web3 = this.state.web3;
 
-      web3.eth.getAccounts((error, accounts) => {
-        return accounts[0];
-      })
-    }, 5000);
+    //   web3.eth.getAccounts((error, accounts) => {
+    //     return accounts[0];
+    //   })
+    // }, 5000);
 
 
   }
 
-  shouldComponentUpdate(nextProps) {
-    return false;
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   return false;
+  // }
 
   instantiateContract() {
 
     const contract = require('truffle-contract')
     const streaming = contract(StreamingContract);
     streaming.setProvider(this.state.web3.currentProvider)
-    
+
     var streamingInstance;
     this.state.web3.eth.getAccounts((error, accounts) => {
       streaming.deployed().then((instance) => {
         streamingInstance = instance
 
         // Stores a given value, 5 by default.
-        return streamingInstance.bill('0xf17f52151EbEF6C7334FAD080c5704D77216b732', { from: accounts[0], value: 1000000000000000000})
+        return streamingInstance.bill('0xf17f52151EbEF6C7334FAD080c5704D77216b732', { from: accounts[0], value: 1000000000000000000 })
       }).then((result) => {
         // Get the value from the contract to prove it worked.
         // return simpleStorageInstance.get.call(accounts[0])
-      // }).then((result) => {
-      //   // Update state with the result.
-      //   return this.setState({ storageValue: result.c[0] })
-      // })
-      console.log(result);
+        // }).then((result) => {
+        //   // Update state with the result.
+        //   return this.setState({ storageValue: result.c[0] })
+        // })
+        console.log(result);
       })
     });
   }
@@ -168,7 +171,7 @@ class App extends Component {
             <AppBar
               title={<span style={styles.title}>StreamBox</span>}
               onTitleClick={this.handleClick}
-              iconElementRight={<div><Avatar src={superman} style={{margin: 6}} /><label style={{top:'-18px',position:'relative',margin:5}}>nacho123</label></div>}
+              iconElementRight={<div><Avatar src={superman} style={{ margin: 6 }} /><label style={{ top: '-18px', position: 'relative', margin: 5 }}>nacho123</label></div>}
             />
             <main className="container pure-g">
               <div className="pure-u-3-4">
