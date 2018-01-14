@@ -2,21 +2,24 @@ import React, { Component } from 'react'
 import SimpleStorageContract from '../build/contracts/SimpleStorage.json'
 import getWeb3 from './utils/getWeb3'
 import { Player } from 'video-react'
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import darkTheme from './darkTheme'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import AppBar from 'material-ui/AppBar'
 import FlatButton from 'material-ui/FlatButton'
-// import { Launcher } from 'react-chat-window'
-import 'react-chat-elements/dist/main.css'
-import { MessageList, Input, Button } from 'react-chat-elements';
+import { List, ListItem } from 'material-ui/List'
+import Avatar from 'material-ui/Avatar'
+import Subheader from 'material-ui/Subheader'
+import Divider from 'material-ui/Divider'
 
-
-import './css/oswald.css'
-import './css/open-sans.css'
 import './css/pure-min.css'
+import 'react-chat-elements/dist/main.css'
 import '../node_modules/video-react/dist/video-react.css'
 import './App.css'
+
+import superman from './img/superman.png'
+import ninja from './img/ninja.png'
+import avatar from './img/avatar.png'
 
 class App extends Component {
   constructor(props) {
@@ -108,74 +111,53 @@ class App extends Component {
       },
     };
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-        <div className="App">
-          {/* <nav className="navbar pure-menu pure-menu-horizontal">
+      <div className="container">
+        <MuiThemeProvider muiTheme={getMuiTheme(darkTheme)}>
+          <div className="container">
+            {/* <nav className="navbar pure-menu pure-menu-horizontal">
             <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
           </nav> */}
-          <AppBar
-            title={<span style={styles.title}>StreamBox</span>}
-            onTitleClick={this.handleClick}
-            iconClassNameRight="muidocs-icon-navigation-expand-more"
-            iconElementRight={<FlatButton label="Upload" />}
-          />
+            <AppBar
+              title={<span style={styles.title}>StreamBox</span>}
+              onTitleClick={this.handleClick}
+              iconElementRight={<FlatButton label="Upload" />}
+            />
+            <main className="container pure-g">
+              <div className="pure-u-3-4">
+                <div className="vid-box">
+                  <h2>Overwatch Live Stream</h2>
+                  <Player
+                    playsInline
+                    poster="/assets/poster.png"
+                    src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+                  />
+                </div>
+              </div>
+              <div className="pure-u-1-4 chat-box">
+                <List>
+                  <Subheader>Recent chats</Subheader>
+                  <ListItem
+                    primaryText="Brendan Lim"
+                    leftAvatar={<Avatar src={superman} />}
+                  />
+                  <ListItem
+                    primaryText="Eric Hoffman"
+                    leftAvatar={<Avatar src={ninja} />}
+                  />
+                  <ListItem
+                    primaryText="Grace Ng"
+                    leftAvatar={<Avatar src={avatar} />}
+                  />
+                </List>
+                <Divider />
+              </div>
+            </main>
+          </div>
+        </MuiThemeProvider>
+      </div>
 
-          <main className="container">
-            <div className="pure-g">
-              <div className="pure-u-1-2">
-                <Player
-                  playsInline
-                  poster="/assets/poster.png"
-                  src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
-                />
-              </div>
-              <div className="pure-u-1-2">
-                <div className="pure-g">
-                <div className="pure-u-1-2">
-                </div>
-                  <div className="pure-u-1-2">
-                    <MessageList
-                      className='message-list'
-                      lockable={true}
-                      toBottomHeight={'100%'}
-                      dataSource={[
-                        {
-                          position: 'left',
-                          type: 'text',
-                          text: 'This stream is awesome!',
-                          date: new Date(),
-                        },
-                        {
-                          position: 'right',
-                          type: 'text',
-                          text: 'Totally!',
-                          date: new Date(),
-                        },
-                        {
-                          position: 'left',
-                          type: 'text',
-                          text: 'I bet Day9 will win!',
-                          date: new Date(),
-                        }
-                      ]} />
-                    <Input
-                      placeholder="Type here..."
-                      multiline={true}
-                      buttons={
-                        <Button
-                          color='white'
-                          backgroundColor='black'
-                          text='Send' />
-                      } />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </main>
-        </div>
-      </MuiThemeProvider>
     );
   }
 }
 
-export default App
+export default App  
