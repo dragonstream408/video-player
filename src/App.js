@@ -1,7 +1,16 @@
 import React, { Component } from 'react'
 import SimpleStorageContract from '../build/contracts/SimpleStorage.json'
 import getWeb3 from './utils/getWeb3'
-import { Player } from 'video-react';
+import { Player } from 'video-react'
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import AppBar from 'material-ui/AppBar'
+import FlatButton from 'material-ui/FlatButton'
+// import { Launcher } from 'react-chat-window'
+import 'react-chat-elements/dist/main.css'
+import { MessageList, Input, Button } from 'react-chat-elements';
+
 
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -15,7 +24,8 @@ class App extends Component {
 
     this.state = {
       storageValue: 0,
-      web3: null
+      web3: null,
+      messageList: []
     }
   }
 
@@ -69,31 +79,101 @@ class App extends Component {
     })
   }
 
-  render() {
-    return (
-      <div className="App">
-        <nav className="navbar pure-menu pure-menu-horizontal">
-          <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
-        </nav>
+  handleClick() {
+    alert('onClick triggered on the title component');
+  }
 
-        <main className="container">
-          <div className="pure-g">
-            <div className="pure-u-1-1">
-              <h1>Good to Go!</h1>
-              <p>Your Truffle Box is installed and ready.</p>
-              <h2>Smart Contract Example</h2>
-              <p>If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).</p>
-              <p>Try changing the value stored on <strong>line 59</strong> of App.js.</p>
-              <p>The stored value is: {this.state.storageValue}</p>
-              <Player
-                playsInline
-                poster="/assets/poster.png"
-                src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
-              />
+  _onMessageWasSent(message) {
+    this.setState({
+      messageList: [...this.state.messageList, message]
+    })
+  }
+
+  _sendMessage(text) {
+    if (text.length > 0) {
+      this.setState({
+        messageList: [...this.state.messageList, {
+          author: 'them',
+          type: 'text',
+          data: { text }
+        }]
+      })
+    }
+  }
+
+  render() {
+    const styles = {
+      title: {
+        cursor: 'pointer',
+      },
+    };
+    return (
+      <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+        <div className="App">
+          {/* <nav className="navbar pure-menu pure-menu-horizontal">
+            <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
+          </nav> */}
+          <AppBar
+            title={<span style={styles.title}>StreamBox</span>}
+            onTitleClick={this.handleClick}
+            iconClassNameRight="muidocs-icon-navigation-expand-more"
+            iconElementRight={<FlatButton label="Upload" />}
+          />
+
+          <main className="container">
+            <div className="pure-g">
+              <div className="pure-u-1-2">
+                <Player
+                  playsInline
+                  poster="/assets/poster.png"
+                  src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+                />
+              </div>
+              <div className="pure-u-1-2">
+                <div className="pure-g">
+                <div className="pure-u-1-2">
+                </div>
+                  <div className="pure-u-1-2">
+                    <MessageList
+                      className='message-list'
+                      lockable={true}
+                      toBottomHeight={'100%'}
+                      dataSource={[
+                        {
+                          position: 'left',
+                          type: 'text',
+                          text: 'This stream is awesome!',
+                          date: new Date(),
+                        },
+                        {
+                          position: 'right',
+                          type: 'text',
+                          text: 'Totally!',
+                          date: new Date(),
+                        },
+                        {
+                          position: 'left',
+                          type: 'text',
+                          text: 'I bet Day9 will win!',
+                          date: new Date(),
+                        }
+                      ]} />
+                    <Input
+                      placeholder="Type here..."
+                      multiline={true}
+                      buttons={
+                        <Button
+                          color='white'
+                          backgroundColor='black'
+                          text='Send' />
+                      } />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </main>
-      </div>
+          </main>
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
