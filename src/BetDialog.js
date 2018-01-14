@@ -28,7 +28,7 @@ export default class BetDialog extends Component {
         label="Accept"
         primary={true}
         keyboardFocused={true}
-        onClick={this.handleClose}
+        onClick={this.props.acceptBet}
       />,
     ];
 

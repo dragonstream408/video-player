@@ -105,8 +105,7 @@ class App extends Component {
 
   }
 
-  handleBet() {
-
+  acceptBet() {
     const contract = require('truffle-contract')
     const streaming = contract(StreamingContract);
     streaming.setProvider(this.state.web3.currentProvider)
@@ -175,7 +174,7 @@ class App extends Component {
       <div className="container">
         <MuiThemeProvider muiTheme={getMuiTheme(darkTheme)}>
           <div className="container">
-            <BetDialog open={this.state.openBetDialog} />
+            <BetDialog open={this.state.openBetDialog} acceptBet={this.acceptBet} />
             <AppBar
               title={<span style={styles.title}>StreamBox</span>}
               onTitleClick={this.handleClick}
