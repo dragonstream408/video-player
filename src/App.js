@@ -56,7 +56,7 @@ class App extends Component {
         this.state.web3.eth.getBalance(account, function (err, balance) {
           const balanceInEther = that.state.web3.fromWei(balance, 'ether');
           that.setState({
-            balance: balanceInEther.toString()
+            balance: balanceInEther.toString().substring(0, 5)
           });
         });
       })
@@ -84,7 +84,7 @@ class App extends Component {
         this.state.web3.eth.getAccounts((error, accounts) => {
           streaming.deployed().then((instance) => {
             streamingInstance = instance
-            return streamingInstance.bill('0xf17f52151EbEF6C7334FAD080c5704D77216b732', { from: accounts[0], value: 10000000000000000 })
+            return streamingInstance.bill('0xf17f52151EbEF6C7334FAD080c5704D77216b732', { from: accounts[0], value: 1000000000000000000 })
           })
         });
       }
@@ -97,7 +97,7 @@ class App extends Component {
       web3.eth.getBalance(account, function (err, balance) {
         const balanceInEther = web3.fromWei(balance, 'ether');
         that.setState({
-          balance: balanceInEther.toString()
+          balance: balanceInEther.toString().substring(0, 5)
         });
       });
     }).bind(this), 5000);
@@ -105,7 +105,7 @@ class App extends Component {
 
   }
 
-  instantiateContract() {
+  handleBet() {
 
     const contract = require('truffle-contract')
     const streaming = contract(StreamingContract);
